@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.shoppinglists.MainActivity">
+
+    <TextView
+        android:layout_width="342dp"
+        android:layout_height="519dp"
+        android:layout_marginBottom="8dp"
+        android:text="The purpose of the application is to create daily shopping lists for home/work and in general.
+The application provides the ability to share shopping lists with a group of people and allow to each one of them to edit the list by adding products and removing as they wish and to update their needs.
+Each user can be a part of more than one group and exit groups if he wishes to.
+\n\n
+Adiram Shemesh\n
+Hila Sinianski\n
+Paz Albert"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+</android.support.constraint.ConstraintLayout>
