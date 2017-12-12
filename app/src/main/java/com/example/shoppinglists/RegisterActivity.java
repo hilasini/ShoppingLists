@@ -1,9 +1,12 @@
 package com.example.shoppinglists;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -29,6 +32,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,29 +45,27 @@ import java.util.Date;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
+import android.widget.Toast;
 
 
 public class RegisterActivity extends AppCompatActivity
 {
-/*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-    }
-*/
-    static final int camera=1;
-    ImageView viewImage;
     Button b;
-
+    private static final int CAMERA_PIC_REQUEST = 22;
+    private ImageView ImgPhoto;
+    private Bitmap bitmap;
+    private Intent intent;
+    public static Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+
+            ActivityCompat.requestPermissions( this, new String[] {  Manifest.permission.CAMERA  },22 );
+        }
         setContentView(R.layout.activity_register);
         b=(Button)findViewById(R.id.Photobutton);
-        //  viewImage=(ImageView)findViewById(R.id.viewImage);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +76,6 @@ public class RegisterActivity extends AppCompatActivity
 
 
     private void selectImage() {
-
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
@@ -83,21 +84,21 @@ public class RegisterActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Take Photo")) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        startActivityForResult(intent, camera);
-                    }
+
+                    ImgPhoto = (ImageView) findViewById(R.id.imageButton);
+
+                                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+
                 }
                 else if (options[item].equals("Choose from Gallery"))
                 {
-                    //Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    //startActivityForResult(intent, 2);
-                    Intent intent = new Intent();
+                    intent = new Intent();
+                    // Show only images, no videos or anything else
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent,"select Pic"),2);
+                    // Always show the chooser (if there are multiple options available)
+                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
                 }
                 else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
@@ -108,90 +109,45 @@ public class RegisterActivity extends AppCompatActivity
     }
 
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
 
-            if (requestCode == 1) {
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
-                File f = new File(Environment.getExternalStorageDirectory().toString());
-                for (File temp : f.listFiles()) {
-                    if (temp.getName().equals("temp.jpg")) {
-                        f = temp;
-                        break;
-                    }
-                }
-                try {
-                    Bitmap bitmap;
-                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+            try {
 
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-                            bitmapOptions);
+            uri = data.getData();
 
-                    viewImage.setImageBitmap(bitmap);
+            String ext=getContentResolver().getType(uri);
+            ext=ext.substring(ext.lastIndexOf("/")+ 1);
 
-
-                    String path = android.os.Environment
-                            .getExternalStorageDirectory()
-                            + File.separator
-                            + "Phoenix" + File.separator + "default";
-                    f.delete();
-                    OutputStream outFile = null;
-                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-                    try {
-                        outFile = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
-                        outFile.flush();
-                        outFile.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                /*
-                Intent intent = new Intent();
-                intent.setType("image/*");
-               // intent.setAction(Intent.ACTION_GET_CONTENT);
-               // startActivityForResult(Intent.createChooser(intent,"take Pic"),camera);
-                Uri selectedImage = intent.getData();
-
-                ImageView pic=(ImageView)findViewById(R.id.imageButton);
-                //pic.setImageURI(selectedImage);
-                */
-
+            if(ext.equals("jpeg") || ext.equals("png"))
+            {
+                ((ImageButton) findViewById(R.id.imageButton)).setImageURI(uri);
             }
-        }
-
-            else if (requestCode == 2){
-
-                Uri selectedImage = data.getData();
-
-                ImageView pic=(ImageView)findViewById(R.id.imageButton);
-                pic.setImageURI(selectedImage);
-
-                /*
-                String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                String picturePath = c.getString(columnIndex);
-                c.close();
-                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                //Log.w("path of image from gallery......******************.........", picturePath);
-                Log.w("path of image:", picturePath + ".jpg");
-                viewImage.setImageBitmap(thumbnail);
-            */
+            else
+            {
+                Toast.makeText(this, "please insert a .jpg or .png", Toast.LENGTH_LONG).show();
             }
 
+
+            } catch (Exception e) {
+                Toast.makeText(this, "Couldn't load photo", Toast.LENGTH_LONG).show();
+            }
         }
+        else if (resultCode == RESULT_OK) {
+            try {
+                bitmap = (Bitmap) data.getExtras().get("data");
+
+                ImgPhoto.setImageBitmap(bitmap);
+
+            } catch (Exception e) {
+                Toast.makeText(this, "Couldn't load photo", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
 
 
@@ -240,5 +196,3 @@ public class RegisterActivity extends AppCompatActivity
 
 
 }
-
-

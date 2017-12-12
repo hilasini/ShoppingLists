@@ -23,10 +23,8 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
+    <uses-feature android:name="android.hardware.camera"></uses-feature>
 
-    <uses-feature
-        android:name="android.hardware.camera2.full"
-        android:required="true" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:name="android.hardware.location.gps" />
 
