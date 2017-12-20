@@ -23,7 +23,7 @@
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="120dp"
-            android:layout_height="75dp"
+            android:layout_height="99dp"
             app:srcCompat="@drawable/ic_menu_gallery" />
     </LinearLayout>
 
@@ -163,10 +163,11 @@
 
         <Button
             android:id="@+id/send"
-            android:layout_width="116dp"
+            android:layout_width="121dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="confirm" />
+            android:text="confirm"
+            android:onClick="SendClicked"/>
 
     </LinearLayout>
 
