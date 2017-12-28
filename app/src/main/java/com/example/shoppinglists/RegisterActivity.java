@@ -204,7 +204,10 @@ public class RegisterActivity extends AppCompatActivity
         }
 
         User user=new User(username, password, firstname, lastname, email, city, street);
-        demoRef.push().setValue(user);
+        demoRef.child(username).setValue(user);
+
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(intent);
     }
 
     public void SendClicked(View view) {
