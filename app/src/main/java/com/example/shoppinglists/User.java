@@ -16,8 +16,8 @@ public class User {
     private String status;
     private List<ShopList> MyLists;
 
-    public User(String username, String password, String firstname, String lastname, String email, String city, String street, String photo, String status, List<ShopList> myLists) {
-        this.username = username;
+    public User(String password, String firstname, String lastname, String email, String city, String street, String photo, String status, List<ShopList> myLists) {
+        //this.username = username;
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;

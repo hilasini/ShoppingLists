@@ -1,66 +1,59 @@
 package com.example.shoppinglists;
 
-import android.Manifest;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.text.TextUtils;
-import android.util.Base64;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Patterns;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.Toast;
-
+import com.firebase.client.Firebase;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
-public class RegisterActivity extends AppCompatActivity
-{
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
-    DatabaseReference rootRef,demoRef;
 
-    Button b;
-    private static final int CAMERA_PIC_REQUEST = 22;
+    private EditText etFirstName,etLastName,etPassword,etStreet,etCity,etEmail;
+    private String firstname,lastname,password,street,city,email;
+    Button bRegister;
+
+
+    public static Uri uri;
     private ImageView ImgPhoto;
     private Bitmap bitmap;
+
+    String userId;
+    private Firebase mRootRef;
+    DatabaseReference databaseReference;
+    private FirebaseAuth mAuth;
+    private FirebaseUser firebaseUser;
     private Intent intent;
-    public static Uri uri;
-
-    private EditText editTextUsername;
-    private EditText editTextFirstname;
-    private EditText editTextLastname;
-    private EditText editTextEmail;
-    private EditText editTextPassword;
-    private EditText editTextCity;
-    private EditText editTextStreet;
-    private String photo;
-
+    private static final int CAMERA_PIC_REQUEST = 22;
+    Button b;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-
-            ActivityCompat.requestPermissions( this, new String[] {  Manifest.permission.CAMERA  },22 );
-        }
         setContentView(R.layout.activity_register);
         b=(Button)findViewById(R.id.Photobutton);
         b.setOnClickListener(new View.OnClickListener() {
@@ -69,22 +62,121 @@ public class RegisterActivity extends AppCompatActivity
                 selectImage();
             }
         });
+        Firebase.setAndroidContext(this);
+        mRootRef=new Firebase("https://shoppinglists-7f8a8.firebaseio.com/User");
 
-        //database reference pointing to root of database
-        rootRef = FirebaseDatabase.getInstance().getReference();
-        //database reference pointing to demo node
-        demoRef = rootRef.child("User");
+        //////////////////////////////////////////
 
+        mAuth = FirebaseAuth.getInstance();
 
-        editTextUsername=(EditText) findViewById(R.id.usernicknameText);
-        editTextFirstname=(EditText) findViewById(R.id.userfirstnameText);
-        editTextLastname=(EditText) findViewById(R.id.userlastnameText);
-        editTextEmail=(EditText) findViewById(R.id.emaileditText);
-        editTextPassword=(EditText) findViewById(R.id.passwordText);
-        editTextCity=(EditText) findViewById(R.id.cityText);
-        editTextStreet=(EditText) findViewById(R.id.streetText);
+        etFirstName = (EditText) findViewById(R.id.userfirstnameText);
+        etLastName = (EditText) findViewById(R.id.userlastnameText);
+        etPassword = (EditText) findViewById(R.id.passwordText);
+        etStreet = (EditText) findViewById(R.id.streetText);
+        etCity = (EditText) findViewById(R.id.cityText);
+        etEmail = (EditText) findViewById(R.id.emaileditText);
+        bRegister = (Button) findViewById(R.id.send);
+
+        bRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                register();
+            }
+
+        });
     }
+    public void register(){
+        intialize();
+        if(!vaildate()){
+            Toast.makeText(this,"signup has Failed",Toast.LENGTH_SHORT).show();
+        }
+        else{
+            onSignupSuccess();
+        }
+    }
+    public void onSignupSuccess(){
+        //TODO what will go after the vaild input
+        Intent i = new Intent(RegisterActivity.this,LoginActivity.class);
+        startActivity(i);
+    }
+    public boolean vaildate(){
+        boolean vaild = true;
+        if (firstname.isEmpty()||firstname.length()>32){
+            etFirstName.setError("Please enter vaild first name");
+            vaild = false;
+        }
+        else if (lastname.isEmpty()||lastname.length()>32){
+            etLastName.setError("Please enter vaild last name");
+            vaild = false;
+        }
+        else if(password.length()>32||password.length()<6){
+            etPassword.setError("Please enter vaild password");
+            vaild = false;
+        }
+        else if(street.isEmpty()){
+            etStreet.setError("Please enter vaild street");
+            vaild = false;
+        }
+        else if(city.isEmpty()){
+            etCity.setError("Please enter vaild city");
+            vaild = false;
+        }
+        else if(email.isEmpty()||!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            etEmail.setError("Please enter vaild E-mail");
+            vaild = false;
+        }
+        else {
 
+            Task<AuthResult> authResultTask = mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    if (task.isSuccessful()) {
+                        firebaseUser = mAuth.getCurrentUser();
+                        userId = firebaseUser.getUid();
+                        databaseReference = FirebaseDatabase.getInstance().getReference("User");
+
+//            String id = databaseReference.push().getKey();
+//                        Toast.makeText(getApplicationContext(), userId, Toast.LENGTH_LONG).show();
+                        String id = userId;
+                        User user = new User(password,firstname,lastname,email,city,street,"","user",new ArrayList<ShopList>());
+                        // String emailUser= user.getEmail();
+                        databaseReference.child(userId).setValue(user);
+
+
+//                        Toast.makeText(getApplicationContext(), "User Registered Successfull", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+
+//            Firebase mRefChild = mRootRef.child("First Name");
+//            mRefChild.setValue(user.getUserFirstName());
+//            mRefChild = mRootRef.child("Last Name");
+//            mRefChild.setValue(user.getUserLastName());
+//            mRefChild = mRootRef.child("Street");
+//            mRefChild.setValue(user.getUserStreet());
+//            mRefChild = mRootRef.child("City");
+//            mRefChild.setValue(user.getUserCity());
+//            mRefChild = mRootRef.child("Password");
+//            mRefChild.setValue(user.getUserPassword());
+//            mRefChild = mRootRef.child("Email");
+//            mRefChild.setValue(user.getUserEmail());
+
+
+        }
+        return vaild;
+    }
+    public void intialize(){
+        firstname = etFirstName.getText().toString().trim();
+        lastname = etLastName.getText().toString().trim();
+        password = etPassword.getText().toString().trim();
+        street = etStreet.getText().toString().trim();
+        city = etCity.getText().toString().trim();
+        email = etEmail.getText().toString().trim();
+
+    }
 
     private void selectImage() {
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
@@ -98,8 +190,8 @@ public class RegisterActivity extends AppCompatActivity
 
                     ImgPhoto = (ImageView) findViewById(R.id.imageButton);
 
-                                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                                startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 
                 }
                 else if (options[item].equals("Choose from Gallery"))
@@ -120,7 +212,6 @@ public class RegisterActivity extends AppCompatActivity
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -129,31 +220,19 @@ public class RegisterActivity extends AppCompatActivity
 
             try {
 
-            uri = data.getData();
+                uri = data.getData();
 
-            String ext=getContentResolver().getType(uri);
-            ext=ext.substring(ext.lastIndexOf("/")+ 1);
+                String ext=getContentResolver().getType(uri);
+                ext=ext.substring(ext.lastIndexOf("/")+ 1);
 
-            if(ext.equals("jpeg") || ext.equals("png"))
-            {
-                ((ImageButton) findViewById(R.id.imageButton)).setImageURI(uri);
-
-                if(ext.equals("png")) {
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                    photo = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+                if(ext.equals("jpeg") || ext.equals("png"))
+                {
+                    ((ImageButton) findViewById(R.id.imageButton)).setImageURI(uri);
                 }
-
-                if(ext.equals("jpeg")) {
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                    photo = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+                else
+                {
+                    Toast.makeText(this, "please insert a .jpg or .png", Toast.LENGTH_LONG).show();
                 }
-            }
-            else
-            {
-                Toast.makeText(this, "please insert a .jpg or .png", Toast.LENGTH_LONG).show();
-            }
 
 
             } catch (Exception e) {
@@ -166,83 +245,11 @@ public class RegisterActivity extends AppCompatActivity
 
                 ImgPhoto.setImageBitmap(bitmap);
 
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                photo = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-
             } catch (Exception e) {
                 Toast.makeText(this, "Couldn't load photo", Toast.LENGTH_LONG).show();
             }
         }
     }
-
-
-    private void registerUser()
-    {
-        //getting email and password from edit texts
-        String username = editTextUsername.getText().toString().trim();
-        String firstname = editTextFirstname.getText().toString().trim();
-        String lastname = editTextLastname.getText().toString().trim();
-        String city = editTextCity.getText().toString().trim();
-        String street = editTextStreet.getText().toString().trim();
-        String email = editTextEmail.getText().toString().trim();
-        String password  = editTextPassword.getText().toString().trim();
-
-
-
-        //checking if email and passwords are empty
-        if(TextUtils.isEmpty(username)){
-            Toast.makeText(this,"Please enter user name",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if(TextUtils.isEmpty(password)){
-            Toast.makeText(this,"Please enter password",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if(TextUtils.isEmpty(firstname)){
-            Toast.makeText(this,"Please enter first name",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if(TextUtils.isEmpty(lastname)){
-            Toast.makeText(this,"Please enter last name",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if(TextUtils.isEmpty(city)){
-            Toast.makeText(this,"Please enter a city",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if(TextUtils.isEmpty(street)){
-            Toast.makeText(this,"Please enter a street",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if(TextUtils.isEmpty(email)){
-            Toast.makeText(this,"Please enter email",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        List<ShopList> myShopList=new ArrayList<ShopList>();
-
-        User user=new User(username,password,firstname,lastname,email,city,street,photo,"user",myShopList);
-        demoRef.child(username).setValue(user);
-
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-        startActivity(intent);
-    }
-
-    public void SendClicked(View view) {
-        //calling register method on click
-        registerUser();
-    }
-
-
-
-
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -284,7 +291,8 @@ public class RegisterActivity extends AppCompatActivity
     }
 
 
-
-
-
+    @Override
+    public void onClick(View v) {
+        //  register();
+    }
 }
