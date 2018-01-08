@@ -1,5 +1,8 @@
 package com.example.shoppinglists;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 
     private String username;
@@ -9,20 +12,11 @@ public class User {
     private String Email;
     private String city;
     private String street;
+    private String photo;
+    private String status;
+    private List<ShopList> MyLists;
 
-
-    public User() {
-        this.username = "";
-        this.password = "";
-        this.firstname = "";
-        this.lastname = "";
-        Email = "";
-        this.city = "";
-        this.street = "";
-    }
-
-
-    public User(String username, String password, String firstname, String lastname, String email, String city, String street) {
+    public User(String username, String password, String firstname, String lastname, String email, String city, String street, String photo, String status, List<ShopList> myLists) {
         this.username = username;
         this.password = password;
         this.firstname = firstname;
@@ -30,6 +24,23 @@ public class User {
         Email = email;
         this.city = city;
         this.street = street;
+        this.photo = photo;
+        this.status = status;
+        MyLists = myLists;
+    }
+
+    public User()
+    {
+        this.username = "";
+        this.password = "";
+        this.firstname = "";
+        this.lastname = "";
+        Email = "";
+        this.city = "";
+        this.street = "";
+        this.photo = "";
+        this.status = "user";
+        MyLists = new ArrayList<>();
     }
 
     public String getUsername() {
@@ -87,4 +98,30 @@ public class User {
     public void setStreet(String street) {
         this.street = street;
     }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<ShopList> getMyLists() {
+        return MyLists;
+    }
+
+    public void setMyLists(List<ShopList> myLists) {
+        MyLists = myLists;
+    }
+
+
 }

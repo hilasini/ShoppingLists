@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,10 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity
 {
@@ -46,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity
     private EditText editTextPassword;
     private EditText editTextCity;
     private EditText editTextStreet;
-
+    private String photo;
 
 
     @Override
@@ -132,6 +137,18 @@ public class RegisterActivity extends AppCompatActivity
             if(ext.equals("jpeg") || ext.equals("png"))
             {
                 ((ImageButton) findViewById(R.id.imageButton)).setImageURI(uri);
+
+                if(ext.equals("png")) {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    photo = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+                }
+
+                if(ext.equals("jpeg")) {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    photo = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+                }
             }
             else
             {
@@ -148,6 +165,10 @@ public class RegisterActivity extends AppCompatActivity
                 bitmap = (Bitmap) data.getExtras().get("data");
 
                 ImgPhoto.setImageBitmap(bitmap);
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                photo = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
 
             } catch (Exception e) {
                 Toast.makeText(this, "Couldn't load photo", Toast.LENGTH_LONG).show();
@@ -166,6 +187,8 @@ public class RegisterActivity extends AppCompatActivity
         String street = editTextStreet.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password  = editTextPassword.getText().toString().trim();
+
+
 
         //checking if email and passwords are empty
         if(TextUtils.isEmpty(username)){
@@ -203,7 +226,9 @@ public class RegisterActivity extends AppCompatActivity
             return;
         }
 
-        User user=new User(username, password, firstname, lastname, email, city, street);
+        List<ShopList> myShopList=new ArrayList<ShopList>();
+
+        User user=new User(username,password,firstname,lastname,email,city,street,photo,"user",myShopList);
         demoRef.child(username).setValue(user);
 
         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
