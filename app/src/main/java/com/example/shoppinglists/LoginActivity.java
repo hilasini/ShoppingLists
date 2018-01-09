@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Assign ID's to EditText.
-        email = (EditText)findViewById(R.id.email);
+        email = (EditText)findViewById(R.id.username);
         password = (EditText)findViewById(R.id.password);
 
         // Assign ID's to button.
