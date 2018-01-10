@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.w3c.dom.Text;
 
 public class UserInfoActivity extends AppCompatActivity {
+
     static TextView txtfirstname;
     static TextView txtlastname;
     static TextView txtcity;
