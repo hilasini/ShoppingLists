@@ -22,4 +22,19 @@
         android:title="map"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/Products"
+        android:title="products"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/ProductsInList"
+        android:title="products in list"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/UsersLists"
+        android:title="my lists"
+        app:showAsAction="never"/>
+
 </menu>

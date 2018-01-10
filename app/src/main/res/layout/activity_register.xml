@@ -51,21 +51,6 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <AutoCompleteTextView
-                android:id="@+id/usernicknameText"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:hint="user name"
-                android:inputType="textPersonName"
-                android:maxLines="1"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
-
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <AutoCompleteTextView
@@ -79,7 +64,7 @@
         </android.support.design.widget.TextInputLayout>
 
 
-        <android.support.design.widget.TextInputLayout
+               <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <AutoCompleteTextView

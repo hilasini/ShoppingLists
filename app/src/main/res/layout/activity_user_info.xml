@@ -12,95 +12,83 @@
     tools:context="com.example.shoppinglists.LoginActivity"
     android:scrollbarAlwaysDrawVerticalTrack="true">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/usernicknameText_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/usernicknametextView"
-        android:layout_width="307dp"
-        android:layout_height="45dp"
-        android:text="nickname"
-        tools:layout_editor_absoluteX="32dp"
-        tools:layout_editor_absoluteY="31dp" />
-    </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/passwordText_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/passwordtextView"
-        android:layout_width="307dp"
-        android:layout_height="45dp"
-        android:text="password"
-        tools:layout_editor_absoluteX="32dp"
-        tools:layout_editor_absoluteY="72dp" />
+        <TextView
+            android:id="@+id/passwordtextView"
+            android:layout_width="307dp"
+            android:layout_height="45dp"
+            android:text="password"
+            tools:layout_editor_absoluteX="32dp"
+            tools:layout_editor_absoluteY="72dp" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/firstnameText_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/userfirstnametextView"
-        android:layout_width="307dp"
-        android:layout_height="45dp"
-        android:text="first name"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="120dp" />
+        <TextView
+            android:id="@+id/userfirstnametextView"
+            android:layout_width="307dp"
+            android:layout_height="45dp"
+            android:text="first name"
+            tools:layout_editor_absoluteX="31dp"
+            tools:layout_editor_absoluteY="120dp" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/lastnameText_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/userlastnametextView"
-        android:layout_width="307dp"
-        android:layout_height="45dp"
-        android:text="last name"
-        tools:layout_editor_absoluteX="32dp"
-        tools:layout_editor_absoluteY="164dp" />
+        <TextView
+            android:id="@+id/userlastnametextView"
+            android:layout_width="307dp"
+            android:layout_height="45dp"
+            android:text="last name"
+            tools:layout_editor_absoluteX="32dp"
+            tools:layout_editor_absoluteY="164dp" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/cityText_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/citytextView"
-        android:layout_width="307dp"
-        android:layout_height="45dp"
-        android:text="city"
-        tools:layout_editor_absoluteX="32dp"
-        tools:layout_editor_absoluteY="207dp" />
+        <TextView
+            android:id="@+id/citytextView"
+            android:layout_width="307dp"
+            android:layout_height="45dp"
+            android:text="city"
+            tools:layout_editor_absoluteX="32dp"
+            tools:layout_editor_absoluteY="207dp" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/streetText_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/streettextView"
-        android:layout_width="307dp"
-        android:layout_height="45dp"
-        android:text="street"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="253dp" />
+        <TextView
+            android:id="@+id/streettextView"
+            android:layout_width="307dp"
+            android:layout_height="45dp"
+            android:text="street"
+            tools:layout_editor_absoluteX="31dp"
+            tools:layout_editor_absoluteY="253dp" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/emailText_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/emailtextView"
-        android:layout_width="307dp"
-        android:layout_height="45dp"
-        android:text="Email"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="301dp" />
+        <TextView
+            android:id="@+id/emailtextView"
+            android:layout_width="307dp"
+            android:layout_height="45dp"
+            android:text="Email"
+            tools:layout_editor_absoluteX="31dp"
+            tools:layout_editor_absoluteY="301dp" />
     </android.support.design.widget.TextInputLayout>
 
-    </LinearLayout>
+</LinearLayout>

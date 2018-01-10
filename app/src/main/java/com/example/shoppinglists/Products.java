@@ -12,6 +12,12 @@ public class Products {
         ProductPrice = productPrice;
     }
 
+    public Products() {
+        ProductID = "";
+        ProductName = "";
+        ProductPrice = 0.00;
+    }
+
     public String getProductID() {
         return ProductID;
     }

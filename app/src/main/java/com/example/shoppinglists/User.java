@@ -5,7 +5,6 @@ import java.util.List;
 
 public class User {
 
-    private String username;
     private String password;
     private String firstname;
     private String lastname;
@@ -17,7 +16,6 @@ public class User {
     private List<ShopList> MyLists;
 
     public User(String password, String firstname, String lastname, String email, String city, String street, String photo, String status, List<ShopList> myLists) {
-        //this.username = username;
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -31,7 +29,6 @@ public class User {
 
     public User()
     {
-        this.username = "";
         this.password = "";
         this.firstname = "";
         this.lastname = "";
@@ -43,13 +40,6 @@ public class User {
         MyLists = new ArrayList<>();
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getPassword() {
         return password;
