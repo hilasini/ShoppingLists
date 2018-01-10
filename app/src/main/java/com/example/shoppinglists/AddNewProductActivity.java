@@ -1,5 +1,6 @@
 package com.example.shoppinglists;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -45,26 +46,31 @@ public class AddNewProductActivity extends AppCompatActivity {
     {
         if(ValidInput())
         {
-            double price=Double.parseDouble(ProductPrice.toString());
-            Products product=new Products(ProductID.toString(),ProductName.toString(),price);
-            mRootRef.child(ProductID.toString()).setValue(product);
+            double price=Double.parseDouble(ProductPrice.getText().toString());
+            Products product=new Products(ProductID.getText().toString(),ProductName.getText().toString(),price);
+            mRootRef.child(ProductID.getText().toString()).setValue(product);
+            Intent intent1 = new Intent(this, ProductsActivity.class);
+            this.startActivity(intent1);
         }
     }
 
     public boolean ValidInput()
     {
-        if (ProductID.toString().isEmpty()||ProductID.toString().length()>32){
-            ProductID.setError("Please enter vaild ID");
+        String id=ProductID.getText().toString();
+        String name=ProductName.getText().toString();
+        String price=ProductPrice.getText().toString();
+        if (id.isEmpty()||id.length()>32){
+            ProductID.setError("Please enter vaild ID "+id);
             return false;
         }
-        if (ProductName.toString().isEmpty()||ProductName.toString().length()>32){
+        if (name.isEmpty()||name.length()>32){
             ProductName.setError("Please enter vaild name");
             return false;
         }
-        if (ProductPrice.toString().isEmpty()||ProductPrice.toString().length()>32){
+        if (price.isEmpty()||price.length()>32){
             try
             {
-                Double.parseDouble(ProductPrice.toString());
+                Double.parseDouble(price);
             }
             catch(NumberFormatException e)
             {

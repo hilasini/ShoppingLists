@@ -63,6 +63,7 @@ public class ProductsActivity extends AppCompatActivity {
 
         ProductList = new ArrayList<Products>();
 
+
         gridViewArrayAdapter = new ArrayAdapter<Products>(this,android.R.layout.simple_list_item_1, ProductList);
         // Data bind GridView with ArrayAdapter (String Array elements)
         gridView.setAdapter(gridViewArrayAdapter);
