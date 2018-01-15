@@ -124,6 +124,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             onSignupSuccess();
         }
     }
+
+    
     public void onSignupSuccess(){
         //TODO what will go after the vaild input
         Intent i = new Intent(RegisterActivity.this,LoginActivity.class);
