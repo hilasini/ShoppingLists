@@ -1,160 +1,194 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+<?xml version="1.0" encoding="UTF-8"?>
+
+    <LinearLayout
+    android:scrollbarAlwaysDrawVerticalTrack="true"
     tools:context="com.example.shoppinglists.LoginActivity"
-    android:scrollbarAlwaysDrawVerticalTrack="true">
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
 
     <LinearLayout
-        android:id="@+id/imagebutton_layout"
-        android:layout_width="wrap_content"
+        android:gravity="center"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_width="wrap_content"
+        android:id="@+id/imagebutton_layout">
+
+    <ImageButton
+        android:layout_height="99dp"
+        android:layout_width="120dp"
+        android:id="@+id/imageButton"
+        app:srcCompat="@drawable/ic_menu_gallery"/>
+
+</LinearLayout>
 
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="120dp"
-            android:layout_height="99dp"
-            app:srcCompat="@drawable/ic_menu_gallery" />
+    <LinearLayout
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/Photobutton_layout">
+
+    <Button
+        android:gravity="bottom"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:id="@+id/Photobutton"
+        android:text="Add Photo"/>
+
+</LinearLayout>
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/uploadButton_layout">
     </LinearLayout>
 
+
     <LinearLayout
-        android:id="@+id/Photobutton_layout"
-        android:layout_width="wrap_content"
+        android:orientation="vertical"
         android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/Photobutton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:text="Add Photo" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/usernicknameText_layout"
         android:layout_width="match_parent"
+        android:id="@+id/usernicknameText_layout">
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+    <AutoCompleteTextView
+        android:layout_height="35dp"
+        android:layout_width="match_parent"
+        android:id="@+id/usernicknameText"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:inputType="textPersonName"
+        android:hint="user name"/>
+
+</android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_width="match_parent">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <AutoCompleteTextView
+        android:layout_height="35dp"
+        android:layout_width="match_parent"
+        android:id="@+id/passwordText"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:inputType="textPassword"
+        android:hint="password"/>
 
-            <AutoCompleteTextView
-                android:id="@+id/passwordText"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:hint="password"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+</android.support.design.widget.TextInputLayout>
 
 
-               <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <AutoCompleteTextView
-                android:id="@+id/userfirstnameText"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:hint="first name"
-                android:inputType="textPersonName"
-                android:maxLines="1"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+    <AutoCompleteTextView
+        android:layout_height="35dp"
+        android:layout_width="match_parent"
+        android:id="@+id/userfirstnameText"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:inputType="textPersonName"
+        android:hint="first name"/>
+
+</android.support.design.widget.TextInputLayout>
 
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <AutoCompleteTextView
-                android:id="@+id/userlastnameText"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:hint="last name"
-                android:inputType="textPersonName"
-                android:maxLines="1"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+    <AutoCompleteTextView
+        android:layout_height="35dp"
+        android:layout_width="match_parent"
+        android:id="@+id/userlastnameText"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:inputType="textPersonName"
+        android:hint="last name"/>
+
+</android.support.design.widget.TextInputLayout>
 
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <AutoCompleteTextView
-                android:id="@+id/cityText"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:hint="city"
-                android:inputType="textPersonName"
-                android:maxLines="1"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+    <AutoCompleteTextView
+        android:layout_height="35dp"
+        android:layout_width="match_parent"
+        android:id="@+id/cityText"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:inputType="textPersonName"
+        android:hint="city"/>
 
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <AutoCompleteTextView
-                android:id="@+id/streetText"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:hint="street"
-                android:inputType="textPersonName"
-                android:maxLines="1"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+</android.support.design.widget.TextInputLayout>
 
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <AutoCompleteTextView
-                android:id="@+id/emaileditText"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+    <AutoCompleteTextView
+        android:layout_height="35dp"
+        android:layout_width="match_parent"
+        android:id="@+id/streetText"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:inputType="textPersonName"
+        android:hint="street"/>
+
+</android.support.design.widget.TextInputLayout>
 
 
-    </LinearLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
 
+    <AutoCompleteTextView
+        android:layout_height="35dp"
+        android:layout_width="match_parent"
+        android:id="@+id/emaileditText"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:inputType="textEmailAddress"
+        android:hint="Email"/>
 
+</android.support.design.widget.TextInputLayout>
+
+</LinearLayout>
 
 
     <LinearLayout
-        android:id="@+id/send_layout"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/send_layout"
         android:layout_gravity="center">
 
-        <Button
-            android:id="@+id/send"
-            android:layout_width="121dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="confirm"
-            android:onClick="SendClicked"/>
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="121dp"
+        android:id="@+id/send"
+        android:text="confirm"
+        android:layout_gravity="bottom"
+        android:onClick="SendClicked"/>
 
-    </LinearLayout>
-
+</LinearLayout>
 
 </LinearLayout>

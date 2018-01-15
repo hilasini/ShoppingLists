@@ -5,6 +5,7 @@ import android.database.DataSetObserver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -178,6 +179,50 @@ public class ProductsActivity extends AppCompatActivity {
 
 
 
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch(item.getItemId())
+        {
+            case R.id.Login:
+                Intent intent1 = new Intent(this, LoginActivity.class);
+                this.startActivity(intent1);
+                return true;
+
+            case R.id.Maps:
+                Intent intent2 = new Intent(this, MapsActivity.class);
+                this.startActivity(intent2);
+                return true;
+
+            case R.id.Main:
+                Intent intent3 = new Intent(this, MainActivity.class);
+                this.startActivity(intent3);
+                return true;
+
+            case R.id.UserInfo:
+                Intent intent4 = new Intent(this, UserInfoActivity.class);
+                this.startActivity(intent4);
+                return true;
+
+            case R.id.Products:
+                Intent intent5 = new Intent(this, ProductsActivity.class);
+                this.startActivity(intent5);
+                return true;
+
+            case R.id.ProductsInList:
+                Intent intent6 = new Intent(this, ProductsInListActivity.class);
+                this.startActivity(intent6);
+                return true;
+
+            case R.id.UsersLists:
+                Intent intent7 = new Intent(this, UsersListsActivity.class);
+                this.startActivity(intent7);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
 
 
 

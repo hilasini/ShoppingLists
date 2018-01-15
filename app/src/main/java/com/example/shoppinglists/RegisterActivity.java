@@ -1,5 +1,6 @@
 package com.example.shoppinglists;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,14 +22,21 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -43,13 +51,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private Bitmap bitmap;
 
     String userId;
+    String photoId;
     private Firebase mRootRef;
     DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
     private Intent intent;
     private static final int CAMERA_PIC_REQUEST = 22;
-    Button b;
+    Button b,btnUpload;
+    private Uri filePath;
+    private final int PICK_IMAGE_REQUEST = 71;
+    FirebaseStorage storage;
+    StorageReference storageReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +76,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 selectImage();
             }
         });
+/*
+        btnUpload=(Button)findViewById(R.id.UploadButton);
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadImage();
+            }
+        });
+*/
         Firebase.setAndroidContext(this);
         mRootRef=new Firebase("https://shoppinglists-7f8a8.firebaseio.com/User");
 
@@ -82,12 +105,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             public void onClick(View v) {
 
                 register();
+                uploadImage();
             }
 
         });
     }
-
-
     public void register(){
         intialize();
         if(!vaildate()){
@@ -180,6 +202,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+
     private void selectImage() {
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
 
@@ -211,6 +234,42 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         });
         builder.show();
+    }
+
+    private void uploadImage()
+    {
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        if(uri != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+            StorageReference ref = storageReference.child("images").child(userId);
+            ref.putFile(uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        }
     }
 
 
@@ -286,22 +345,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 Intent intent4 = new Intent(this, UserInfoActivity.class);
                 this.startActivity(intent4);
                 return true;
-
-            case R.id.Products:
-                Intent intent5 = new Intent(this, ProductsActivity.class);
-                this.startActivity(intent5);
-                return true;
-
-            case R.id.ProductsInList:
-                Intent intent6 = new Intent(this, ProductsInListActivity.class);
-                this.startActivity(intent6);
-                return true;
-
-            case R.id.UsersLists:
-                Intent intent7 = new Intent(this, UsersListsActivity.class);
-                this.startActivity(intent7);
-                return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }

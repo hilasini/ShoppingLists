@@ -8,17 +8,23 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 
 import org.w3c.dom.Text;
 
@@ -44,6 +50,10 @@ public class UserInfoActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     String userId;
 
+    private ImageView inputPhoto;
+    private StorageReference mStorageRef;
+    private String uid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,10 +66,13 @@ public class UserInfoActivity extends AppCompatActivity {
 
         mFirebaseDatabase =FirebaseDatabase.getInstance();
         databaseReference=mFirebaseDatabase.getReference();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         firebaseUser=mAuth.getCurrentUser();
         userId = firebaseUser.getUid();
-        //Toast.makeText(this, userId,Toast.LENGTH_LONG).show();
+        // Toast.makeText(this, userId,Toast.LENGTH_LONG).show();
+
+
 
         FirstNameRef=new Firebase("https://shoppinglists-7f8a8.firebaseio.com/User/"+userId+"/firstname");
         FirstNameRef.addValueEventListener(new ValueEventListener() {
@@ -142,6 +155,11 @@ public class UserInfoActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String value= dataSnapshot.getValue(String.class);
                 UserInfoActivity.txtemail.setText(value);
+                inputPhoto=(ImageView)findViewById(R.id.imgButton);
+                StorageReference image=mStorageRef.child("images/"+ txtemail.getText().toString());
+                Glide.with(UserInfoActivity.this)
+                        .using(new FirebaseImageLoader())
+                        .load(image).into(inputPhoto);
             }
 
             @Override
@@ -149,9 +167,12 @@ public class UserInfoActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
+    private  void showImage()
+    {
+
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -210,6 +231,3 @@ public class UserInfoActivity extends AppCompatActivity {
 
 
 }
-
-
-
