@@ -1,11 +1,14 @@
 package com.example.shoppinglists;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -35,6 +38,8 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -174,21 +179,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
             });
 
-
-//            Firebase mRefChild = mRootRef.child("First Name");
-//            mRefChild.setValue(user.getUserFirstName());
-//            mRefChild = mRootRef.child("Last Name");
-//            mRefChild.setValue(user.getUserLastName());
-//            mRefChild = mRootRef.child("Street");
-//            mRefChild.setValue(user.getUserStreet());
-//            mRefChild = mRootRef.child("City");
-//            mRefChild.setValue(user.getUserCity());
-//            mRefChild = mRootRef.child("Password");
-//            mRefChild.setValue(user.getUserPassword());
-//            mRefChild = mRootRef.child("Email");
-//            mRefChild.setValue(user.getUserEmail());
-
-
         }
         return vaild;
     }
@@ -216,8 +206,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     ImgPhoto = (ImageView) findViewById(R.id.imageButton);
 
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 
+                    startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
                 }
                 else if (options[item].equals("Choose from Gallery"))
                 {
@@ -240,12 +230,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
         if(uri != null)
         {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
-            StorageReference ref = storageReference.child("images").child(userId);
+            StorageReference ref = storageReference.child("images").child(email);
             ref.putFile(uri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -301,10 +292,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         }
         else if (resultCode == RESULT_OK) {
-            try {
+            try { //photo taken with the camera
                 bitmap = (Bitmap) data.getExtras().get("data");
 
                 ImgPhoto.setImageBitmap(bitmap);
+
+                //adding the photo to the gallery.
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                String path = MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(), bitmap, "Title","adding a photo to gallery" );
+                Uri uriBitmap=uri.parse(path);
+                uri=uriBitmap;
+                Toast.makeText(getApplicationContext(),path+" uploaded successfully "+path,Toast.LENGTH_LONG).show();
 
             } catch (Exception e) {
                 Toast.makeText(this, "Couldn't load photo", Toast.LENGTH_LONG).show();
