@@ -125,7 +125,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    
+
     public void onSignupSuccess(){
         //TODO what will go after the vaild input
         Intent i = new Intent(RegisterActivity.this,LoginActivity.class);
@@ -303,8 +303,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
                 String path = MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(), bitmap, "Title","adding a photo to gallery" );
-                Uri uriBitmap=uri.parse(path);
-                uri=uriBitmap;
+                uri=uri.parse(path);
                 Toast.makeText(getApplicationContext(),path+" uploaded successfully "+path,Toast.LENGTH_LONG).show();
 
             } catch (Exception e) {

@@ -19,6 +19,7 @@ import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -34,9 +35,7 @@ public class AddNewProductActivity extends AppCompatActivity {
     private Button Confirm;
 
 
-    private Firebase mRootRef;
-    FirebaseStorage storage;
-    StorageReference storageReference;
+    private DatabaseReference ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +54,14 @@ public class AddNewProductActivity extends AppCompatActivity {
             }
 
         });
-
-        mRootRef = new Firebase("https://shoppinglists-7f8a8.firebaseio.com/Products");
+        ref = FirebaseDatabase.getInstance().getReference().child("Products");
     }
 
     public void saveProduct() {
         if (ValidInput()) {
             double price = Double.parseDouble(ProductPrice.getText().toString());
             Products product = new Products(ProductID.getText().toString(), ProductName.getText().toString(), price);
-            mRootRef.child(ProductID.getText().toString()).setValue(product);
+            ref.child(ProductID.getText().toString()).setValue(product);
             Intent intent1 = new Intent(this, ProductsActivity.class);
             this.startActivity(intent1);
         }

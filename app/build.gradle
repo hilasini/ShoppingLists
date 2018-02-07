@@ -15,6 +15,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        configurations.all {
+            resolutionStrategy.force 'org.hamcrest:hamcrest-core:1.3'
+        }
     }
 }
 
@@ -46,6 +49,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.7.22'
     androidTestCompile 'org.mockito:mockito-android:2.7.22'
+    compile 'com.android.support.test:testing-support-lib:0.1'
+    compile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
 
 }
 

@@ -19,3 +19,15 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#this method reaches the user who connected the app
+-keep class * com.google.firebase.auth.FirebaseAuth{
+public FirebaseUser getCurrentUser();
+}
+
+
+#the user fields so importent so we want to save them beacuse it will
+#keep our app quicker to reload and get the products which are available
+-keepclassmembers class com.example.shoppinglists.Products {
+    private <fields>;
+}

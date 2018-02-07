@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ShoppingLists.iml" filepath="$PROJECT_DIR$/ShoppingLists.iml" />
-      <module fileurl="file://C:\Users\Adiram Shemesh\Downloads\AndroidLocationApp-master\ShoppingLists\ShoppingLists.iml" filepath="C:\Users\Adiram Shemesh\Downloads\AndroidLocationApp-master\ShoppingLists\ShoppingLists.iml" />
-      <module fileurl="file://C:\ShoppingLists\.idea\ShoppingLists.iml" filepath="C:\ShoppingLists\.idea\ShoppingLists.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

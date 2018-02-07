@@ -10,6 +10,7 @@
         android:layout_width="342dp"
         android:layout_height="519dp"
         android:layout_marginBottom="8dp"
+        android:id="@+id/View"
         android:text="The purpose of the application is to create daily shopping lists for home/work and in general.
 The application provides the ability to share shopping lists with a group of people and allow to each one of them to edit the list by adding products and removing as they wish and to update their needs.
 Each user can be a part of more than one group and exit groups if he wishes to.

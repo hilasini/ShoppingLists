@@ -47,6 +47,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -75,6 +77,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
+
+    private FirebaseAnalytics mFirebaseAnalytics;
     // Creating EditText.
     EditText email, password ;
 
@@ -110,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Assign FirebaseAuth instance to FirebaseAuth object.
         firebaseAuth = FirebaseAuth.getInstance();
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         // Checking if user already logged in before and not logged out properly.
 
@@ -130,7 +134,14 @@ public class LoginActivity extends AppCompatActivity {
                     // If  EditTextEmptyCheck == true then login function called.
                     LoginFunction();
 
+                    Bundle params = new Bundle();
+                    params.putInt("Button :", view.getId());
+                    String btrName = "Login Button";
+
+                    Log.d("", "Button click logged" + btrName);
+                    mFirebaseAnalytics.logEvent("Login",params);
                 }
+
                 else {
 
                     // If  EditTextEmptyCheck == false then toast display on screen.
@@ -148,6 +159,14 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Closing current activity.
                 finish();
+
+
+                Bundle params = new Bundle();
+                params.putInt("Button :", view.getId());
+                String btrName = "Register Button";
+
+                Log.d("", "Button click logged" + btrName);
+                mFirebaseAnalytics.logEvent("Register",params);
 
                 // Opening the Main Activity .
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -199,17 +218,23 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         // If task done Successful.
-                        if(task.isSuccessful()){
+                        if(task.isSuccessful()) {
 
                             // Hiding the progress dialog.
                             progressDialog.dismiss();
 
                             // Closing the current Login Activity.
                             finish();
-                            
-                            // Opening the UserProfileActivity.
-                            Intent intent = new Intent(LoginActivity.this, UserInfoActivity.class);
-                            startActivity(intent);
+
+                            if (firebaseAuth.getCurrentUser().getUid().equals("admin")) {
+                                Intent intent = new Intent(LoginActivity.this, ProductsActivity.class);
+                                startActivity(intent);
+                            }
+                            else {
+                                // Opening the UserProfileActivity.
+                                Intent intent = new Intent(LoginActivity.this, UserInfoActivity.class);
+                                startActivity(intent);
+                            }
                         }
                         else {
 

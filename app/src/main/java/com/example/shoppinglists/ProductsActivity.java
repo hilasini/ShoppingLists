@@ -41,7 +41,6 @@ public class ProductsActivity extends AppCompatActivity {
 
     private GridView gridView;
     private Button AddNewProduct;
-    private Firebase status;
     private String Userstatus;
 
     // Create a new ArrayAdapter
@@ -72,26 +71,22 @@ public class ProductsActivity extends AppCompatActivity {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String uid= currentUser.getUid();
-
-        status=new Firebase("https://shoppinglists-7f8a8.firebaseio.com/User/"+uid+"/status");
         Userstatus= "";
-        status.addValueEventListener(new ValueEventListener() {
 
-            @Override
-            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                Userstatus= dataSnapshot.getValue(String.class);
-                Manager();
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
+        if(!currentUser.getUid().equals("admin"))
+        {
+            Userstatus="user";
+        }
+        else {
+            Userstatus="admin";
+            Manager();
+        }
 
     }
 
     private void Manager() {
-        if(Userstatus.contains("manager"))
+        if(Userstatus=="admin")
+                //Userstatus.contains("manager")
         {
             AddNewProduct.setVisibility(View.VISIBLE);
             AddNewProduct.setOnClickListener(new View.OnClickListener() {
